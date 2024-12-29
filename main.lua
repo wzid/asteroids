@@ -1,23 +1,21 @@
 local push = require("lib.push.push")
 local timer = require("lib.hump.timer")
-local colors = require("assets.data.collections.colors")
-local Window = require("src.singleton.Window")
-local Input = require("src.singleton.Input")
+local colors = require("assets.collections.colors")
+local Window = require("base.singleton.Window")
+local Input = require("base.singleton.Input")
 local Node
 local root
-local animations
 
 
 function love.load()
 	Window:setup(3)
-	love.window.setTitle("Project Skeleton")
-	push:setBorderColor(colors.b16_black)
+	love.window.setTitle("asteroids")
+	push:setBorderColor(colors.black_23:unpack())
 
-	Node = require("src.Node")
+	Node = require("base.Node")
 	root = Node()
-	animations = require("assets.data.collections.animations")
 
-	require("demo")(root)
+	require("src")(root)
 end
 
 function love.update(dt)
@@ -30,7 +28,6 @@ function love.update(dt)
 	if Input:pressed("debug_enable_debug_mode") then debug.debug() end
 
 	timer.update(dt)
-	animations:update(dt)
 	root:update(dt)
 end
 

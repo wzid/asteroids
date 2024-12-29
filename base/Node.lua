@@ -1,4 +1,4 @@
-local Signal = require("src.Signal")
+local Signal = require("base.Signal")
 local Class = require("lib.classic.classic")
 ---An ingame object. This is the building block for any class that contributes
 ---to the gameplay itself; things that change with time and player input.
@@ -38,7 +38,7 @@ function Node:_ready()
 end
 
 function Node:update(dt)
-	-- Remove dead children (jesus)
+	-- Remove dead children :(
 	for i = #self._CHILDREN, 1, -1 do
 		if not self._CHILDREN[i].is_alive then
 			table.remove(self._CHILDREN, i)
