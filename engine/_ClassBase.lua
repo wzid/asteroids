@@ -1,4 +1,4 @@
-local Node = require("base.Node")
+local Node = require("engine.Node")
 local NewClass = Node:extend()
 
 function NewClass:new()

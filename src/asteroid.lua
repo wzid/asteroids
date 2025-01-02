@@ -1,5 +1,5 @@
-local Node = require("base.Node")
-local Window = require("base.singleton.Window")
+local Node = require("engine.Node")
+local Window = require("engine.singleton.Window")
 
 local Asteroid = Node:extend()
 

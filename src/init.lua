@@ -1,5 +1,5 @@
 local Game = require("src.game")
-local fonts = require("assets.collections.fonts")
+local fonts = require("src.collections.fonts")
 local SplashScreen = require("src.splashscreen")
 
 return function(root)

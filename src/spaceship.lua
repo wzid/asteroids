@@ -1,6 +1,6 @@
-local Node = require("base.Node")
-local Window = require("base.singleton.Window")
-local Input = require("base.singleton.Input")
+local Node = require("engine.Node")
+local Window = require("engine.singleton.Window")
+local Input = require("engine.singleton.Input")
 
 local Spaceship = Node:extend()
 

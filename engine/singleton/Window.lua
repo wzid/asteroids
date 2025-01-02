@@ -36,7 +36,7 @@ function Window:setup(scale)
 	)
 
 	-- Require and create fonts AFTER setting up graphics state
-	love.graphics.setFont(require("assets.collections.fonts").splash)
+	love.graphics.setFont(require("src.collections.fonts").splash)
 end
 
 ---@param n integer

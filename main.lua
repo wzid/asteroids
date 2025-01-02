@@ -1,8 +1,8 @@
 local push = require("lib.push.push")
 local timer = require("lib.hump.timer")
-local colors = require("assets.collections.colors")
-local Window = require("base.singleton.Window")
-local Input = require("base.singleton.Input")
+local colors = require("src.collections.colors")
+local Window = require("engine.singleton.Window")
+local Input = require("engine.singleton.Input")
 local Node
 local root
 
@@ -12,7 +12,7 @@ function love.load()
 	love.window.setTitle("asteroids")
 	push:setBorderColor(colors.black_23:unpack())
 
-	Node = require("base.Node")
+	Node = require("engine.Node")
 	root = Node()
 
 	require("src")(root)

@@ -1,6 +1,6 @@
-local Window = require("base.singleton.Window")
+local Window = require("engine.singleton.Window")
 local timer = require("lib.hump.timer")
-local Node = require("base.Node")
+local Node = require("engine.Node")
 local anim8 = require("lib.anim8.anim8")
 
 local SplashScreen = Node:extend()

@@ -1,4 +1,4 @@
-local Signal = require("base.Signal")
+local Signal = require("engine.Signal")
 local Class = require("lib.classic.classic")
 ---An ingame object. This is the building block for any class that contributes
 ---to the gameplay itself; things that change with time and player input.

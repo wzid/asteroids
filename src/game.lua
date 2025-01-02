@@ -1,9 +1,9 @@
-local Node = require("base.Node")
+local Node = require("engine.Node")
 local Asteroid = require("src.asteroid")
-local Window = require("base.singleton.Window")
-local Spaceship = require("src.spaceship")
-local colors = require("assets.collections.colors")
-local shaders = require("assets.collections.shaders")
+local Window = require("engine.singleton.Window")
+local Spaceship = require("src.Spaceship")
+local colors = require("src.collections.colors")
+local shaders = require("src.collections.shaders")
 
 local Game = Node:extend()
 
@@ -11,27 +11,21 @@ local asteroids = {}
 
 function Game:new()
     self.super.new(self)
-    -- BG_MUSIC = love.audio.newSource("assets/audio/race_to_mars.mp3", "stream")
-    -- BG_MUSIC:setLooping(true)
-    -- BG_MUSIC:setVolume(.1)
-    -- BG_MUSIC:play()
+    self.lives_left = 3
+    local spaceship = self:add_child(Spaceship())
 
-    self:add_child(Spaceship())
+    self.spaceship_image = spaceship.image
+
 
     self.chromatic_shader = love.graphics.newShader("assets/shaders/chromatic.fs")
     self.blur_shader = love.graphics.newShader("assets/shaders/blur.fs")
     self.chromatic_shader:send("dir", {0.001, 0.001})
-    local blur_radius = 2
+    local blur_radius = 3
     self.blur_weights = shaders.gen_gaussian(blur_radius)
-    --print the weights
-    for i, v in ipairs(self.blur_weights) do
-        print(i, v)
-    end
-
 
     self.blur_shader:send("weights", unpack(self.blur_weights))
     self.blur_shader:send("radius", blur_radius)
-    self.blur_shader:send("texel_size", {1 / Window.width, 1 / Window.height})  
+    self.blur_shader:send("texel_size", {1 / Window.width, 1 / Window.height})
 
     math.randomseed(os.time())
     for i = 1, 5 do
@@ -50,6 +44,10 @@ function Game:draw()
     love.graphics.setCanvas(self.canvas)
     love.graphics.clear()
     love.graphics.print("Score: " .. self.score, 10, 10)
+    for i = 1, self.lives_left do
+        love.graphics.draw(self.spaceship_image, 10 + (i-1) * 20, 30, 0, .75, 0.75)
+    end
+
 
     self.super.draw(self)
     for _, asteroid in ipairs(asteroids) do
@@ -57,8 +55,8 @@ function Game:draw()
     end
 
     for _, missle in ipairs(self.missles) do
-        love.graphics.setColor(colors.red:unpack())
-        love.graphics.circle("fill", missle.x, missle.y, 2)
+        love.graphics.setColor(1, .15 , .15)
+        love.graphics.circle("fill", missle.x, missle.y, 3)
         love.graphics.setColor(0, 0, 0)
     end
     love.graphics.setCanvas()
@@ -72,16 +70,14 @@ function Game:draw()
     love.graphics.setCanvas()
 
     -- third pass: apply blur
-    love.graphics.setCanvas(self.blur_canvas)
     love.graphics.clear()
+
     love.graphics.setShader(self.blur_shader)
     self.blur_shader:send("dir", {1, 0})
     love.graphics.draw(self.tmp_canvas)
-    love.graphics.setCanvas()
-    love.graphics.clear()
-
     self.blur_shader:send("dir", {0, 1})
-    love.graphics.draw(self.blur_canvas, 0, 0, 0, Window.scale, Window.scale)
+    love.graphics.draw(self.tmp_canvas, 0, 0, 0, Window.scale, Window.scale)
+    
     love.graphics.setShader()
 end
 
@@ -89,6 +85,7 @@ function Game:update(dt)
     self.super.update(self, dt)
     for i, asteroid in ipairs(asteroids) do
         asteroid:update(dt)
+        
         if asteroid.x < -asteroid.img_size or
             asteroid.x > Window.screen_width + asteroid.img_size or
             asteroid.y < -asteroid.img_size or
